@@ -1,54 +1,114 @@
-# React + TypeScript + Vite
+# Vite React Project Setup
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Prerequisites
 
-Currently, two official plugins are available:
+Pastikan Anda sudah menginstall Bun di sistem Anda:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```bash
+# Install Bun (macOS/Linux)
+curl -fsSL https://bun.sh/install | bash
 
-## Expanding the ESLint configuration
+# Install Bun (Windows)
+powershell -c "irm bun.sh/install.ps1 | iex"
+```
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Project Setup
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
+### 1. Create Vite React Project
+
+```bash
+# Buat project baru dengan Vite + React + TypeScript
+bun create vite@latest
+
+lalu pilih React + Typescript
+
+# Masuk ke direktori project
+cd my-react-app
+
+# Install dependencies
+bun install
+```
+
+### 2. Install Shadcn/UI
+
+```bash
+# Install dependencies yang diperlukan
+bun add class-variance-authority clsx tailwind-merge lucide-react
+
+# Install Tailwind CSS
+bun add tailwindcss @tailwindcss/vite
+
+# Replace index.css
+@import "tailwindcss"
+```
+
+### 3. Edit tsconfig.json file
+
+
+```
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.node.json"
+    }
   ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
+```
+### 4. Edit tsconfig.app.json file
+
+```
+{
+  "compilerOptions": {
+    // ...
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+    // ...
+  }
+}
+```
+### 5. Update vite.config.ts
+bun add -D @types/node
+
+```
+import path from "path"
+import tailwindcss from "@tailwindcss/vite"
+import react from "@vitejs/plugin-react"
+import { defineConfig } from "vite"
+
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
     },
   },
 })
 ```
+### 6. RUN CLI
+bunx --bun shadcn@latest init
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+lalu nanti akan ada pertanyaan
+Which color would you like to use as base color? › Neutral -> pilih sesuai selera
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### 7. Install components pertama
+contoh: bunx --bun shadcn@latest add button
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+### Untuk instal komponen lain bisa pergi ke halaman
+https://ui.shadcn.com/docs/components
+
+
